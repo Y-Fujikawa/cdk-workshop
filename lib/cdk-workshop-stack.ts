@@ -1,5 +1,6 @@
 import { Duration, Stack, StackProps } from 'aws-cdk-lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as apigw from 'aws-cdk-lib/aws-apigateway';
 import { Construct } from 'constructs';
 
 export class CdkWorkshopStack extends Stack {
@@ -22,6 +23,12 @@ export class CdkWorkshopStack extends Stack {
       runtime: lambda.Runtime.NODEJS_20_X, // execution environment
       code: lambda.Code.fromAsset('lambda'), // code loaded from "lambda" directory
       handler: 'hello.handler' // file is "hello", function is "handler"
+    });
+
+    // https://cdkworkshop.com/ja/20-typescript/30-hello-cdk/400-apigw.html
+    // defines an API Gateway REST API resource backed by our "hello" function.
+    new apigw.LambdaRestApi(this, 'Endpoint', {
+      handler: hello
     });
   }
 }
